@@ -51,6 +51,11 @@ The reader supports:
 - Keyboard control: ← → PageUp PageDown Home End Esc
 - Download button for the original PDF
 - Retina-sharp rendering (canvas is scaled by devicePixelRatio)
+- On phones (Android and iOS): swipe left/right to turn pages, double-tap to
+  zoom in and back out, pinch to zoom, and a single tap hides/shows the
+  toolbars so the page fills more of the screen. Buttons are sized for
+  comfortable tapping and the page-number box no longer triggers iOS's
+  zoom-on-focus.
 
 Nothing is downloaded until someone clicks "Read sample" — PDF.js and the PDF itself are
 both fetched on first open, and each document is cached for the rest of the visit. If the
@@ -90,6 +95,27 @@ To swap in a different sample later, replace the file in `samples/` keeping the 
 filename, and update the page count in `index.html` (search for `34 pages` / `36 pages`).
 
 ---
+
+## Enquiry form now sends automatically (no redirect)
+
+The form submits with `fetch()` in the background, so the visitor never leaves
+the page or gets sent to a new tab — they just see the "Thank you" message
+appear under the form.
+
+By default the enquiry is emailed straight to **pandit11317@gmail.com**
+through [FormSubmit.co](https://formsubmit.co), which needs no account and no
+API key. **One-time step:** the very first enquiry triggers a confirmation
+email from FormSubmit to `pandit11317@gmail.com` — open it and click
+"Activate Form" once. Every enquiry after that is delivered straight away,
+with no further setup.
+
+If you'd rather also (or instead) store enquiries in a database you can
+browse later, fill in `SUPABASE_URL` / `SUPABASE_ANON_KEY` near the bottom of
+`index.html` and follow the Supabase steps below — with both configured, an
+enquiry is sent to both places at once.
+
+To change the destination email, edit `FORMSUBMIT_EMAIL` in the same
+`<script>` block.
 
 ## Deploy: Supabase + GitHub + Vercel
 

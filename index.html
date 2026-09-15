@@ -281,6 +281,9 @@
   .pdfv-zoom{font-size:12.5px;color:var(--brown-soft);min-width:44px;text-align:center;}
   .pdfv-tools .dl{background:var(--saffron);border-color:var(--saffron);color:#fff;font-weight:600;}
   .pdfv-tools .dl:hover{background:var(--saffron-deep);border-color:var(--saffron-deep);}
+  .pdfv-credit{border:none!important;background:none!important;color:var(--brown-soft)!important;
+    font-size:11.5px!important;padding:6px 4px!important;opacity:.75;margin-left:auto;}
+  .pdfv-credit:hover{opacity:1;text-decoration:underline;}
   body.pdfv-lock{overflow:hidden;}
 
   @media(max-width:760px){
@@ -496,7 +499,11 @@
   .foot-lang button{background:none;border:1px solid #6B5240;color:#CBB99E;padding:5px 12px;border-radius:14px;font-size:12px;}
   .foot-lang button.active{background:var(--saffron);border-color:var(--saffron);color:#fff;}
   .disclaimer{border-top:1px solid #5A4231;padding-top:22px;font-size:11.5px;color:#A6957D;line-height:1.7;max-width:820px;}
-  .foot-bottom{margin-top:22px;padding-top:18px;border-top:1px solid #5A4231;font-size:12px;color:#8B7A65;}
+  .foot-bottom{margin-top:22px;padding-top:18px;border-top:1px solid #5A4231;font-size:12px;color:#8B7A65;
+    display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;justify-content:space-between;}
+  .foot-credit{opacity:.85;}
+  .foot-credit a{color:#C9AB6E;text-decoration:none;}
+  .foot-credit a:hover{text-decoration:underline;}
   @media(max-width:820px){.foot-grid{grid-template-columns:1fr 1fr;}}
   @media(max-width:520px){.foot-grid{grid-template-columns:1fr;}}
 
@@ -1253,6 +1260,9 @@
       <a class="dl" id="pdfvDl" href="samples/kundli-sample-hi.pdf" download>
         <span class="en">Download</span><span class="hi">डाउनलोड</span>
       </a>
+      <a class="pdfv-credit hide-sm" href="https://github.com/mozilla/pdf.js" target="_blank" rel="noopener">
+        Powered by PDF.js
+      </a>
     </div>
   </div>
 </div>
@@ -1309,6 +1319,10 @@
     <div class="foot-bottom">
       <span class="en">&copy; Sankatmochan Jyotish Evam Anushthan Kendra. All rights reserved.</span>
       <span class="hi">&copy; संकटमोचन ज्योतिष एवं अनुष्ठान केंद्र। सर्वाधिकार सुरक्षित।</span>
+      <span class="foot-credit">
+        <span class="en">Sample Kundli viewer powered by</span><span class="hi">नमूना कुंडली दर्शक</span>
+        <a href="https://github.com/mozilla/pdf.js" target="_blank" rel="noopener">PDF.js</a>
+      </span>
     </div>
   </div>
 </footer>
@@ -1904,10 +1918,17 @@
   })();
 
   /* ==================================================================
-     SAMPLE KUNDLI READER  —  PDF.js based, lazy loaded on first open
+     SAMPLE KUNDLI READER
+     ------------------------------------------------------------------
+     Renderer: PDF.js — https://github.com/mozilla/pdf.js  (Apache-2.0)
+     Loaded lazily (only when a visitor opens the sample Kundli) from
+     the official pre-built "pdfjs-dist" release on cdnjs. Since v4,
+     PDF.js ships as an ES module, so it is pulled in with a dynamic
+     import() instead of a classic <script src> tag.
      ================================================================== */
-  var PDFJS_SRC    = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-  var PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  var PDFJS_VERSION = '6.3.289'; // latest stable — https://github.com/mozilla/pdf.js/releases
+  var PDFJS_SRC    = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.mjs';
+  var PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.mjs';
 
   var SAMPLES = {
     hi: { url:'samples/kundli-sample-hi.pdf', file:'Sankatmochan-Namuna-Kundli-Hindi.pdf',
@@ -1946,17 +1967,18 @@
 
   function loadLib(){
     if(libPromise) return libPromise;
-    libPromise = new Promise(function(resolve, reject){
-      var s = document.createElement('script');
-      s.src = PDFJS_SRC;
-      s.onload = function(){
-        if(!window.pdfjsLib){ reject(new Error('pdfjsLib missing')); return; }
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
-        resolve(window.pdfjsLib);
-      };
-      s.onerror = function(){ reject(new Error('script blocked')); };
-      document.head.appendChild(s);
-    });
+    libPromise = Promise.resolve()
+      .then(function(){ return import(/* webpackIgnore: true */ PDFJS_SRC); })
+      .then(function(lib){
+        if(!lib || !lib.getDocument) throw new Error('pdfjsLib missing');
+        lib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+        window.pdfjsLib = lib; // handy for console debugging
+        return lib;
+      })
+      .catch(function(err){
+        libPromise = null; // allow a retry (e.g. after the visitor reconnects)
+        throw err;
+      });
     return libPromise;
   }
 

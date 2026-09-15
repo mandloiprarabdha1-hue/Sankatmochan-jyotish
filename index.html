@@ -31,12 +31,10 @@
     background:var(--cream);
     color:var(--brown);
     font-family:'Inter',sans-serif;
-    cursor:auto;
+    cursor:none;
     -webkit-font-smoothing:antialiased;
   }
-  a,button,label,summary,.card,.svc,.tab,.lang-toggle button,.foot-lang button{cursor:pointer;}
-  input,select,textarea{cursor:auto;}
-  input[type="submit"],button[type="submit"]{cursor:pointer;}
+  a,button,label,summary,.card,.svc,.tab,.lang-toggle button,.foot-lang button,input,select,textarea,input[type="submit"],button[type="submit"]{cursor:none;}
 
   body.lang-en .hi{display:none;}
   body.lang-hi .en{display:none;}
@@ -590,6 +588,26 @@
     color:var(--brown-soft);background:#fff;
   }
   @media(max-width:920px){.software .wrap{grid-template-columns:1fr;}}
+
+  /* ---------- dynamic circle cursor ---------- */
+  .dynamic-cursor,.dynamic-cursor-dot{
+    position:fixed;left:0;top:0;pointer-events:none;z-index:99999;
+    border-radius:50%;transform:translate3d(-50%,-50%,0);
+    opacity:0;transition:opacity .2s ease;
+  }
+  .dynamic-cursor{
+    width:34px;height:34px;border:1.5px solid var(--gold);
+    background:rgba(185,138,46,.07);
+    transition:width .22s ease,height .22s ease,border-color .22s ease,background .22s ease,opacity .2s ease;
+  }
+  .dynamic-cursor-dot{width:5px;height:5px;background:var(--maroon);}
+  body.cursor-ready .dynamic-cursor,body.cursor-ready .dynamic-cursor-dot{opacity:1;}
+  body.cursor-hover .dynamic-cursor{width:52px;height:52px;border-color:var(--maroon);background:rgba(185,138,46,.14);}
+  @media (hover:none),(pointer:coarse){
+    body{cursor:auto;}
+    a,button,label,summary,.card,.svc,.tab,.lang-toggle button,.foot-lang button,input,select,textarea,input[type="submit"],button[type="submit"]{cursor:auto;}
+    .dynamic-cursor,.dynamic-cursor-dot{display:none!important;}
+  }
 </style>
 </head>
 <body class="lang-en">
@@ -1974,5 +1992,37 @@
   }
 })();
 </script>
+
+  <div class="dynamic-cursor" id="dynamicCursor" aria-hidden="true"></div>
+  <div class="dynamic-cursor-dot" id="dynamicCursorDot" aria-hidden="true"></div>
+  <script>
+    (function(){
+      var c=document.getElementById('dynamicCursor');
+      var d=document.getElementById('dynamicCursorDot');
+      if(!c||!d||window.matchMedia('(hover:none), (pointer:coarse)').matches)return;
+      var mx=-100,my=-100,cx=-100,cy=-100;
+      document.addEventListener('mousemove',function(e){
+        mx=e.clientX; my=e.clientY;
+        document.body.classList.add('cursor-ready');
+      });
+      function animate(){
+        cx+=(mx-cx)*.16; cy+=(my-cy)*.16;
+        c.style.transform='translate3d('+cx+'px,'+cy+'px,0) translate(-50%,-50%)';
+        d.style.transform='translate3d('+mx+'px,'+my+'px,0) translate(-50%,-50%)';
+        requestAnimationFrame(animate);
+      }
+      animate();
+      document.addEventListener('mouseover',function(e){
+        if(e.target.closest('a,button,label,summary,.card,.svc,.tab,.lang-toggle button,.foot-lang button,input,select,textarea'))
+          document.body.classList.add('cursor-hover');
+      });
+      document.addEventListener('mouseout',function(e){
+        if(e.target.closest('a,button,label,summary,.card,.svc,.tab,.lang-toggle button,.foot-lang button,input,select,textarea'))
+          document.body.classList.remove('cursor-hover');
+      });
+      document.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-ready');});
+      document.addEventListener('mouseenter',function(){if(mx>-50)document.body.classList.add('cursor-ready');});
+    })();
+  </script>
 </body>
 </html>

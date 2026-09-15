@@ -213,6 +213,8 @@ Edit both, keep the structure identical, and redeploy.
   very old the photo simply renders as a normal rectangle, which still looks fine.
 
 
-### FlipHTML5 integration
 
-The updated `index.html` includes a FlipHTML5 publication section. Paste the publication/embed URL into `FLIPHTML5_URL` in the script near the FlipHTML5 section. No URL was invented or hard-coded.
+
+### PDF.js reader
+
+The site uses its built-in PDF.js reader for the sample Hindi and English Kundli PDFs. The external publication viewer has been removed.

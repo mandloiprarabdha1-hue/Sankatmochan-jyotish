@@ -313,13 +313,12 @@
   }
 
 
-  /* ---------- FlipHTML5 publication ---------- */
-  .flipbook-section{padding:78px 0;background:var(--ivory);}
-  .flipbook-card{background:var(--cream);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow-warm);}
-  .flipbook-frame{position:relative;width:100%;aspect-ratio:16/10;background:#EFE3CC;}
-  .flipbook-frame iframe{width:100%;height:100%;border:0;display:block;}
-  .flipbook-empty{display:flex;align-items:center;justify-content:center;text-align:center;min-height:320px;padding:30px;color:var(--brown-soft);}
-  .flipbook-note{padding:14px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--brown-soft);}
+  /* ---------- PDF.js reading section ---------- */
+  .pdfjs-section{padding:78px 0;background:var(--ivory);}
+  .pdfjs-card{background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:28px;box-shadow:var(--shadow-warm);text-align:center;}
+  .pdfjs-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px;}
+  .pdfjs-note{margin:16px auto 0;max-width:720px;color:var(--brown-soft);font-size:13px;line-height:1.7;}
+  @media(max-width:600px){.pdfjs-card{padding:20px 14px;}.pdfjs-actions .btn{width:100%;}}
 
   /* ---------- what is kundli ---------- */
   .whatis .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
@@ -609,7 +608,7 @@
       <a href="#about" class="en">About Acharya</a><a href="#about" class="hi">आचार्य परिचय</a>
       <a href="#kundli" class="en">Kundli</a><a href="#kundli" class="hi">कुंडली</a>
       <a href="#sample" class="en">Sample</a><a href="#sample" class="hi">नमूना</a>
-      <a href="#fliphtml5" class="en">FlipHTML5</a><a href="#fliphtml5" class="hi">FlipHTML5</a>
+      <a href="#pdfreader" class="en">PDF Reader</a><a href="#pdfreader" class="hi">PDF रीडर</a>
       <a href="#software" class="en">Software</a><a href="#software" class="hi">सॉफ़्टवेयर</a>
       <a href="#temple" class="en">Temple</a><a href="#temple" class="hi">मंदिर</a>
       <a href="#services" class="en">Services</a><a href="#services" class="hi">सेवाएं</a>
@@ -849,28 +848,30 @@
 </section>
 
 
-<!-- ============ FLIPHTML5 PUBLICATION ============ -->
-<section class="flipbook-section" id="fliphtml5">
+<!-- ============ PDF.JS KUNDLI READER ============ -->
+<section class="pdfjs-section" id="pdfreader">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="rule"></div>
-      <h2><span class="en">Read the Kundli on FlipHTML5</span><span class="hi">FlipHTML5 पर कुंडली पढ़ें</span></h2>
+      <h2><span class="en">Read the Kundli with PDF.js</span><span class="hi">PDF.js से कुंडली पढ़ें</span></h2>
       <p>
-        <span class="en">Open the published Kundli in the FlipHTML5 reader without leaving this website.</span>
-        <span class="hi">इस वेबसाइट को छोड़े बिना प्रकाशित कुंडली को FlipHTML5 रीडर में पढ़ें।</span>
+        <span class="en">Read the sample Kundli directly in our built-in PDF.js reader.</span>
+        <span class="hi">नमूना कुंडली को हमारे बिल्ट-इन PDF.js रीडर में सीधे पढ़ें।</span>
       </p>
     </div>
-    <div class="flipbook-card reveal">
-      <div class="flipbook-frame" id="fliphtml5Frame">
-        <div class="flipbook-empty" id="fliphtml5Empty">
-          <span class="en">The FlipHTML5 publication link will appear here once it is added.</span>
-          <span class="hi">FlipHTML5 प्रकाशन लिंक जोड़ने के बाद यह यहाँ दिखाई देगा।</span>
-        </div>
+    <div class="pdfjs-card reveal">
+      <div class="pdfjs-actions">
+        <button type="button" class="btn btn-primary" data-open-sample="hi">
+          <span class="en">Read Hindi Kundli</span><span class="hi">हिंदी कुंडली पढ़ें</span>
+        </button>
+        <button type="button" class="btn btn-primary" data-open-sample="en">
+          <span class="en">Read English Kundli</span><span class="hi">अंग्रेज़ी कुंडली पढ़ें</span>
+        </button>
       </div>
-      <div class="flipbook-note">
-        <span class="en">FlipHTML5 publication viewer.</span>
-        <span class="hi">FlipHTML5 प्रकाशन दर्शक।</span>
-      </div>
+      <p class="pdfjs-note">
+        <span class="en">The reader supports page navigation, thumbnails, zoom and PDF download. No external publication viewer is used.</span>
+        <span class="hi">रीडर में पेज नेविगेशन, थंबनेल, ज़ूम और PDF डाउनलोड की सुविधा है। इसमें किसी बाहरी प्रकाशन दर्शक का उपयोग नहीं किया गया है।</span>
+      </p>
     </div>
   </div>
 </section>
@@ -1954,28 +1955,6 @@
     });
   })();
 
-
-  /* ------------------------------------------------------------------
-     FLIPHTML5 PUBLICATION
-     Paste the FlipHTML5 publication/embed URL below.
-     Example:
-     var FLIPHTML5_URL = 'https://fliphtml5.com/xxxx/xxxx/';
-     ------------------------------------------------------------------ */
-  var FLIPHTML5_URL = '';
-
-  (function(){
-    var frame = document.getElementById('fliphtml5Frame');
-    var empty = document.getElementById('fliphtml5Empty');
-    if(!frame || !empty || !FLIPHTML5_URL) return;
-
-    var iframe = document.createElement('iframe');
-    iframe.src = FLIPHTML5_URL;
-    iframe.title = 'Sankatmochan Jyotish Kundli — FlipHTML5 publication';
-    iframe.loading = 'lazy';
-    iframe.allow = 'fullscreen';
-    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    frame.replaceChild(iframe, empty);
-  })();
 
   /* ==================================================================
      SAMPLE KUNDLI READER

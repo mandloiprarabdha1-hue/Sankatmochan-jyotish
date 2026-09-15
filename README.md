@@ -211,3 +211,8 @@ Edit both, keep the structure identical, and redeploy.
   directly in the markup if you want a different shade.
 - The photo blend uses CSS `mask-image`, supported in all current browsers. In anything
   very old the photo simply renders as a normal rectangle, which still looks fine.
+
+
+### FlipHTML5 integration
+
+The updated `index.html` includes a FlipHTML5 publication section. Paste the publication/embed URL into `FLIPHTML5_URL` in the script near the FlipHTML5 section. No URL was invented or hard-coded.

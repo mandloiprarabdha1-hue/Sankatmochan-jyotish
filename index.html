@@ -254,6 +254,7 @@
      stay reachable when scrolled left, which justify-content:center clips */
   .pdfv-stage{flex:1;overflow:auto;display:block;text-align:center;
     padding:18px;background:#EFE3CC;position:relative;-webkit-overflow-scrolling:touch;}
+  .pdfv-stage iframe{display:block;width:100%;height:100%;border:0;background:#fff;}
   .pdfv-stage canvas{display:inline-block;background:#fff;
     box-shadow:0 8px 24px rgba(70,40,15,.22);border-radius:2px;max-width:none;}
   .pdfv-msg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
@@ -313,12 +314,13 @@
   }
 
 
-  /* ---------- PDF.js reading section ---------- */
-  .pdfjs-section{padding:78px 0;background:var(--ivory);}
-  .pdfjs-card{background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:28px;box-shadow:var(--shadow-warm);text-align:center;}
-  .pdfjs-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px;}
-  .pdfjs-note{margin:16px auto 0;max-width:720px;color:var(--brown-soft);font-size:13px;line-height:1.7;}
-  @media(max-width:600px){.pdfjs-card{padding:20px 14px;}.pdfjs-actions .btn{width:100%;}}
+  /* ---------- FlipHTML5 publication ---------- */
+  .flipbook-section{padding:78px 0;background:var(--ivory);}
+  .flipbook-card{background:var(--cream);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow-warm);}
+  .flipbook-frame{position:relative;width:100%;aspect-ratio:16/10;background:#EFE3CC;}
+  .flipbook-frame iframe{width:100%;height:100%;border:0;display:block;}
+  .flipbook-empty{display:flex;align-items:center;justify-content:center;text-align:center;min-height:320px;padding:30px;color:var(--brown-soft);}
+  .flipbook-note{padding:14px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--brown-soft);}
 
   /* ---------- what is kundli ---------- */
   .whatis .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
@@ -608,7 +610,6 @@
       <a href="#about" class="en">About Acharya</a><a href="#about" class="hi">आचार्य परिचय</a>
       <a href="#kundli" class="en">Kundli</a><a href="#kundli" class="hi">कुंडली</a>
       <a href="#sample" class="en">Sample</a><a href="#sample" class="hi">नमूना</a>
-      <a href="#pdfreader" class="en">PDF Reader</a><a href="#pdfreader" class="hi">PDF रीडर</a>
       <a href="#software" class="en">Software</a><a href="#software" class="hi">सॉफ़्टवेयर</a>
       <a href="#temple" class="en">Temple</a><a href="#temple" class="hi">मंदिर</a>
       <a href="#services" class="en">Services</a><a href="#services" class="hi">सेवाएं</a>
@@ -848,33 +849,6 @@
 </section>
 
 
-<!-- ============ PDF.JS KUNDLI READER ============ -->
-<section class="pdfjs-section" id="pdfreader">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="rule"></div>
-      <h2><span class="en">Read the Kundli with PDF.js</span><span class="hi">PDF.js से कुंडली पढ़ें</span></h2>
-      <p>
-        <span class="en">Read the sample Kundli directly in our built-in PDF.js reader.</span>
-        <span class="hi">नमूना कुंडली को हमारे बिल्ट-इन PDF.js रीडर में सीधे पढ़ें।</span>
-      </p>
-    </div>
-    <div class="pdfjs-card reveal">
-      <div class="pdfjs-actions">
-        <button type="button" class="btn btn-primary" data-open-sample="hi">
-          <span class="en">Read Hindi Kundli</span><span class="hi">हिंदी कुंडली पढ़ें</span>
-        </button>
-        <button type="button" class="btn btn-primary" data-open-sample="en">
-          <span class="en">Read English Kundli</span><span class="hi">अंग्रेज़ी कुंडली पढ़ें</span>
-        </button>
-      </div>
-      <p class="pdfjs-note">
-        <span class="en">The reader supports page navigation, thumbnails, zoom and PDF download. No external publication viewer is used.</span>
-        <span class="hi">रीडर में पेज नेविगेशन, थंबनेल, ज़ूम और PDF डाउनलोड की सुविधा है। इसमें किसी बाहरी प्रकाशन दर्शक का उपयोग नहीं किया गया है।</span>
-      </p>
-    </div>
-  </div>
-</section>
 
 <!-- ============ WHAT IS A KUNDLI ============ -->
 <section class="section whatis">
@@ -1267,40 +1241,10 @@
       </div>
       <button type="button" class="pdfv-x" data-pdfv-close aria-label="Close">&times;</button>
     </div>
-
     <div class="pdfv-main">
-      <aside class="pdfv-thumbs" id="pdfvThumbs" aria-label="Page thumbnails"></aside>
       <div class="pdfv-stage" id="pdfvStage">
-        <canvas id="pdfvCanvas"></canvas>
-        <div class="pdfv-swipe-hint" id="pdfvSwipeHint"></div>
-        <div class="pdfv-msg on" id="pdfvMsg">
-          <div class="pdfv-spin"></div>
-          <div id="pdfvMsgText"></div>
-        </div>
+        <iframe id="fliphtml5Viewer" title="FlipHTML5 Kundli viewer" loading="eager" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
-    </div>
-
-    <div class="pdfv-tools">
-      <button type="button" id="pdfvThumbBtn" class="hide-sm" title="Thumbnails">☰</button>
-      <span class="sep hide-sm"></span>
-      <button type="button" id="pdfvPrev" aria-label="Previous page">‹</button>
-      <span class="pdfv-page">
-        <input type="number" id="pdfvNum" min="1" value="1" aria-label="Page number">
-        <span>/</span><span id="pdfvTotal">–</span>
-      </span>
-      <button type="button" id="pdfvNext" aria-label="Next page">›</button>
-      <span class="sep"></span>
-      <button type="button" id="pdfvOut" aria-label="Zoom out">−</button>
-      <span class="pdfv-zoom" id="pdfvZoom">100%</span>
-      <button type="button" id="pdfvIn" aria-label="Zoom in">+</button>
-      <button type="button" id="pdfvFit" class="hide-sm">Fit</button>
-      <span class="sep hide-sm"></span>
-      <a class="dl" id="pdfvDl" href="samples/kundli-sample-hi.pdf" download>
-        <span class="en">Download</span><span class="hi">डाउनलोड</span>
-      </a>
-      <a class="pdfv-credit hide-sm" href="https://github.com/mozilla/pdf.js" target="_blank" rel="noopener">
-        Powered by PDF.js
-      </a>
     </div>
   </div>
 </div>
@@ -1957,337 +1901,64 @@
 
 
   /* ==================================================================
-     SAMPLE KUNDLI READER
-     ------------------------------------------------------------------
-     Renderer: PDF.js — https://github.com/mozilla/pdf.js  (Apache-2.0)
-     Loaded lazily (only when a visitor opens the sample Kundli) from
-     the official pre-built "pdfjs-dist" release on cdnjs. Since v4,
-     PDF.js ships as an ES module, so it is pulled in with a dynamic
-     import() instead of a classic <script src> tag.
+     FLIPHTML5 KUNDLI VIEWER
+     The existing "Read sample" buttons open the corresponding
+     FlipHTML5 publication directly inside the sample viewer modal.
      ================================================================== */
-  var PDFJS_VERSION = '6.3.289'; // latest stable — https://github.com/mozilla/pdf.js/releases
-  var PDFJS_SRC    = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.mjs';
-  var PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.mjs';
-
-  var SAMPLES = {
-    hi: { url:'samples/kundli-sample-hi.pdf', file:'Sankatmochan-Namuna-Kundli-Hindi.pdf',
-          en:'Sample Kundli — Hindi edition', hn:'नमूना कुंडली — हिंदी संस्करण' },
-    en: { url:'samples/kundli-sample-en.pdf', file:'Sankatmochan-Sample-Kundli-English.pdf',
-          en:'Sample Kundli — English edition', hn:'नमूना कुंडली — अंग्रेज़ी संस्करण' }
+  var FLIPHTML5 = {
+    hi: 'https://online.fliphtml5.com/gumxk/wsrk/',
+    en: 'https://online.fliphtml5.com/gumxk/qdoe/'
   };
 
   var V = {
-    box:    document.getElementById('pdfv'),
-    shell:  document.querySelector('.pdfv-shell'),
-    stage:  document.getElementById('pdfvStage'),
-    canvas: document.getElementById('pdfvCanvas'),
-    thumbs: document.getElementById('pdfvThumbs'),
-    msg:    document.getElementById('pdfvMsg'),
-    msgTxt: document.getElementById('pdfvMsgText'),
-    title:  document.getElementById('pdfvTitle'),
-    num:    document.getElementById('pdfvNum'),
-    total:  document.getElementById('pdfvTotal'),
-    zoomL:  document.getElementById('pdfvZoom'),
-    dl:     document.getElementById('pdfvDl'),
-    hint:   document.getElementById('pdfvSwipeHint')
+    box: document.getElementById('pdfv'),
+    title: document.getElementById('pdfvTitle'),
+    frame: document.getElementById('fliphtml5Viewer'),
+    hi: document.getElementById('pdfvHi'),
+    en: document.getElementById('pdfvEn')
   };
-  var IS_TOUCH = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-  var libPromise = null, docs = {}, doc = null, docKey = null;
-  var pageNo = 1, zoom = 1, fitMode = 'width', task = null, thumbJob = 0, lastFocus = null;
+  var docKey = null;
 
   function isHi(){ return document.body.classList.contains('lang-hi'); }
-  function say(text, spin){
-    V.msgTxt.textContent = text;
-    V.msg.classList.add('on');
-    V.msg.querySelector('.pdfv-spin').style.display = spin === false ? 'none' : '';
-  }
-  function hideMsg(){ V.msg.classList.remove('on'); }
 
-  function loadLib(){
-    if(libPromise) return libPromise;
-    libPromise = Promise.resolve()
-      .then(function(){ return import(/* webpackIgnore: true */ PDFJS_SRC); })
-      .then(function(lib){
-        if(!lib || !lib.getDocument) throw new Error('pdfjsLib missing');
-        lib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
-        window.pdfjsLib = lib; // handy for console debugging
-        return lib;
-      })
-      .catch(function(err){
-        libPromise = null; // allow a retry (e.g. after the visitor reconnects)
-        throw err;
-      });
-    return libPromise;
-  }
-
-  function renderPage(n){
-    if(!doc) return;
-    pageNo = Math.min(Math.max(1, n), doc.numPages);
-    V.num.value = pageNo;
-    markThumb();
-    if(task){ try{ task.cancel(); }catch(e){} task = null; }
-
-    return doc.getPage(pageNo).then(function(page){
-      var base = page.getViewport({ scale: 1 });
-      var padding = 36;
-      var availW = V.stage.clientWidth  - padding;
-      var availH = V.stage.clientHeight - padding;
-      var fit = fitMode === 'page'
-        ? Math.min(availW / base.width, availH / base.height)
-        : availW / base.width;
-      var scale = Math.max(0.15, fit * zoom);
-
-      var vp  = page.getViewport({ scale: scale });
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var cv  = V.canvas, ctx = cv.getContext('2d', { alpha: false });
-
-      cv.width  = Math.floor(vp.width  * dpr);
-      cv.height = Math.floor(vp.height * dpr);
-      cv.style.width  = Math.floor(vp.width)  + 'px';
-      cv.style.height = Math.floor(vp.height) + 'px';
-
-      task = page.render({
-        canvasContext: ctx,
-        viewport: vp,
-        transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null
-      });
-      return task.promise.then(function(){
-        task = null;
-        hideMsg();
-        V.zoomL.textContent = Math.round(zoom * 100) + '%';
-        V.stage.scrollTop = 0;
-      });
-    }).catch(function(err){
-      if(err && err.name === 'RenderingCancelledException') return;
-      say(isHi() ? 'यह पृष्ठ प्रदर्शित नहीं हो सका।' : 'This page could not be displayed.', false);
-    });
-  }
-
-  function markThumb(){
-    var all = V.thumbs.children;
-    for(var i = 0; i < all.length; i++){
-      all[i].classList.toggle('on', (i + 1) === pageNo);
-    }
-    var cur = all[pageNo - 1];
-    if(cur && cur.scrollIntoView) cur.scrollIntoView({ block:'nearest' });
-  }
-
-  function buildThumbs(){
-    var job = ++thumbJob;
-    V.thumbs.innerHTML = '';
-    var frag = document.createDocumentFragment();
-    for(var i = 1; i <= doc.numPages; i++){
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'pdfv-thumb' + (i === pageNo ? ' on' : '');
-      b.setAttribute('data-p', i);
-      b.innerHTML = '<span class="n">' + i + '</span>';
-      frag.appendChild(b);
-    }
-    V.thumbs.appendChild(frag);
-
-    var i = 0;
-    (function step(){
-      if(job !== thumbJob || i >= doc.numPages) return;
-      var n = ++i, host = V.thumbs.children[n - 1];
-      doc.getPage(n).then(function(page){
-        if(job !== thumbJob || !host) return;
-        var vp1 = page.getViewport({ scale: 1 });
-        var vp  = page.getViewport({ scale: 110 / vp1.width });
-        var cv  = document.createElement('canvas');
-        cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
-        return page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise
-          .then(function(){ if(job === thumbJob && host) host.insertBefore(cv, host.firstChild); });
-      }).catch(function(){}).then(step);
-    })();
-  }
-
-  function openDoc(key){
+  function openFlipbook(key){
     docKey = key;
-    var s = SAMPLES[key];
-    V.title.textContent = isHi() ? s.hn : s.en;
-    V.dl.setAttribute('href', s.url);
-    V.dl.setAttribute('download', s.file);
-    document.getElementById('pdfvHi').classList.toggle('on', key === 'hi');
-    document.getElementById('pdfvEn').classList.toggle('on', key === 'en');
-
-    pageNo = 1; zoom = 1; fitMode = 'width';
-    say(isHi() ? 'कुंडली लोड हो रही है…' : 'Loading the sample Kundli…');
-
-    loadLib().then(function(lib){
-      if(docs[key]) return docs[key];
-      docs[key] = lib.getDocument({ url: s.url }).promise;
-      return docs[key];
-    }).then(function(d){
-      if(docKey !== key) return;
-      doc = d;
-      V.total.textContent = d.numPages;
-      V.num.setAttribute('max', d.numPages);
-      buildThumbs();
-      return renderPage(1);
-    }).catch(function(){
-      delete docs[key];   // don't cache a rejection, so a retry can succeed
-      say(isHi()
-        ? 'नमूना यहाँ नहीं खुल सका। कृपया नीचे “डाउनलोड” से PDF खोलें।'
-        : 'The reader could not start. Please use “Download” below to open the PDF.', false);
-    });
-  }
-
-  function open(key){
-    lastFocus = document.activeElement;
+    var title = key === 'hi' ? 'नमूना कुंडली — हिंदी संस्करण' : 'Sample Kundli — English edition';
+    V.title.textContent = title;
+    V.hi.classList.toggle('on', key === 'hi');
+    V.en.classList.toggle('on', key === 'en');
+    V.frame.src = FLIPHTML5[key];
     V.box.classList.add('open');
-    V.box.setAttribute('aria-hidden', 'false');
+    V.box.setAttribute('aria-hidden','false');
     document.body.classList.add('pdfv-lock');
-    openDoc(key);
-    if(window.__pdfvFirstOpenHint) setTimeout(window.__pdfvFirstOpenHint, 900);
   }
-  function close(){
+
+  function closeFlipbook(){
     V.box.classList.remove('open');
-    V.box.setAttribute('aria-hidden', 'true');
+    V.box.setAttribute('aria-hidden','true');
     document.body.classList.remove('pdfv-lock');
-    if(V.shell) V.shell.classList.remove('chrome-hidden');
-    if(task){ try{ task.cancel(); }catch(e){} task = null; }
-    thumbJob++;
+    V.frame.src = 'about:blank';
     docKey = null;
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
   document.querySelectorAll('[data-open-sample]').forEach(function(btn){
-    btn.addEventListener('click', function(){ open(btn.getAttribute('data-open-sample')); });
+    btn.addEventListener('click', function(){ openFlipbook(btn.getAttribute('data-open-sample')); });
   });
-  V.box.querySelectorAll('[data-pdfv-close]').forEach(function(el){
-    el.addEventListener('click', close);
+  document.querySelectorAll('[data-pdfv-close]').forEach(function(el){
+    el.addEventListener('click', closeFlipbook);
   });
-  V.box.querySelectorAll('[data-pdfv-doc]').forEach(function(el){
-    el.addEventListener('click', function(){
-      var k = el.getAttribute('data-pdfv-doc');
-      if(k !== docKey) openDoc(k);
-    });
-  });
-
-  V.thumbs.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('.pdfv-thumb') : null;
-    if(t) renderPage(parseInt(t.getAttribute('data-p'), 10));
-  });
-
-  document.getElementById('pdfvPrev').addEventListener('click', function(){ renderPage(pageNo - 1); });
-  document.getElementById('pdfvNext').addEventListener('click', function(){ renderPage(pageNo + 1); });
-  V.num.addEventListener('change', function(){
-    var n = parseInt(V.num.value, 10);
-    if(!isNaN(n)) renderPage(n); else V.num.value = pageNo;
-  });
-  document.getElementById('pdfvIn').addEventListener('click', function(){
-    zoom = Math.min(3, Math.round((zoom + 0.25) * 100) / 100); renderPage(pageNo);
-  });
-  document.getElementById('pdfvOut').addEventListener('click', function(){
-    zoom = Math.max(0.5, Math.round((zoom - 0.25) * 100) / 100); renderPage(pageNo);
-  });
-  document.getElementById('pdfvFit').addEventListener('click', function(){
-    fitMode = fitMode === 'width' ? 'page' : 'width';
-    zoom = 1; renderPage(pageNo);
-  });
-  document.getElementById('pdfvThumbBtn').addEventListener('click', function(){
-    V.thumbs.classList.toggle('hide');
-    if(doc) renderPage(pageNo);
-  });
-
-  /* ------------------------------------------------------------------
-     MOBILE TOUCH GESTURES — a more comfortable reading experience on
-     phones: swipe left/right to turn the page, double-tap to zoom in
-     and out, a single tap hides/shows the toolbars so the page fills
-     more of the screen, and pinch is left to the browser's native
-     pinch-zoom (touch-action allows it on the stage).
-  ------------------------------------------------------------------ */
-  if(IS_TOUCH){
-    var tStartX = 0, tStartY = 0, tStartTime = 0, tTouches = 0;
-    var lastTapTime = 0, lastTapX = 0, lastTapY = 0;
-    var hintShown = false;
-
-    function flashHint(text){
-      if(!V.hint) return;
-      V.hint.textContent = text;
-      V.hint.classList.add('show');
-      clearTimeout(flashHint._t);
-      flashHint._t = setTimeout(function(){ V.hint.classList.remove('show'); }, 1600);
-    }
-
-    V.stage.addEventListener('touchstart', function(e){
-      tTouches = e.touches.length;
-      if(tTouches !== 1) return;
-      tStartX = e.touches[0].clientX;
-      tStartY = e.touches[0].clientY;
-      tStartTime = Date.now();
-    }, { passive: true });
-
-    V.stage.addEventListener('touchend', function(e){
-      if(tTouches !== 1 || !doc) return;
-      var t = e.changedTouches[0];
-      var dx = t.clientX - tStartX;
-      var dy = t.clientY - tStartY;
-      var dt = Date.now() - tStartTime;
-      var absDx = Math.abs(dx), absDy = Math.abs(dy);
-
-      // Swipe: fast, mostly-horizontal, and not while pinch-zoomed in
-      if(absDx > 55 && absDx > absDy * 1.6 && dt < 550 && zoom <= 1.1){
-        if(dx < 0 && pageNo < doc.numPages){ renderPage(pageNo + 1); flashHint(isHi() ? 'अगला पृष्ठ' : 'Next page'); }
-        else if(dx > 0 && pageNo > 1){ renderPage(pageNo - 1); flashHint(isHi() ? 'पिछला पृष्ठ' : 'Previous page'); }
-        return;
-      }
-
-      // Tap (little to no movement)
-      if(absDx < 12 && absDy < 12 && dt < 350){
-        var now = Date.now();
-        var isDoubleTap = (now - lastTapTime) < 320
-          && Math.abs(t.clientX - lastTapX) < 30
-          && Math.abs(t.clientY - lastTapY) < 30;
-        lastTapTime = now; lastTapX = t.clientX; lastTapY = t.clientY;
-
-        if(isDoubleTap){
-          zoom = zoom > 1.15 ? 1 : 1.8;
-          renderPage(pageNo);
-          lastTapTime = 0;
-        } else {
-          // single tap toggles the toolbars for an immersive read
-          setTimeout(function(){
-            if(Date.now() - lastTapTime < 320) return; // a second tap is coming, let it win
-            V.shell.classList.toggle('chrome-hidden');
-          }, 330);
-        }
-      }
-    }, { passive: true });
-
-    // one-time hint on first open, shown from the open() flow below
-    window.__pdfvFirstOpenHint = function(){
-      if(hintShown) return;
-      hintShown = true;
-      flashHint(isHi() ? 'पृष्ठ बदलने हेतु स्वाइप करें' : 'Swipe to turn pages');
-    };
-  }
+  V.hi.addEventListener('click', function(){ openFlipbook('hi'); });
+  V.en.addEventListener('click', function(){ openFlipbook('en'); });
 
   document.addEventListener('keydown', function(e){
     if(!V.box.classList.contains('open')) return;
-    if(e.target === V.num) return;
-    if(e.key === 'Escape')     { close(); }
-    else if(e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); renderPage(pageNo + 1); }
-    else if(e.key === 'ArrowLeft'  || e.key === 'PageUp')   { e.preventDefault(); renderPage(pageNo - 1); }
-    else if(e.key === 'Home')  { renderPage(1); }
-    else if(e.key === 'End')   { if(doc) renderPage(doc.numPages); }
+    if(e.key === 'Escape') closeFlipbook();
   });
 
-  // keep the reader's title in step with the site-wide EN / हिंदी toggle
   window.__pdfvRetitle = function(){
     if(!docKey) return;
-    var s = SAMPLES[docKey];
-    V.title.textContent = isHi() ? s.hn : s.en;
+    V.title.textContent = docKey === 'hi' ? 'नमूना कुंडली — हिंदी संस्करण' : 'Sample Kundli — English edition';
   };
-
-  var rz;
-  window.addEventListener('resize', function(){
-    if(!V.box.classList.contains('open') || !doc) return;
-    clearTimeout(rz);
-    rz = setTimeout(function(){ renderPage(pageNo); }, 220);
-  });
 
   // subtle single reveal-on-scroll
   var revealEls = document.querySelectorAll('.reveal');

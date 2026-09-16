@@ -2,7 +2,11 @@
 <html lang="en" id="htmlRoot">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FBF3E4">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="google-site-verification" content="eWsIzuZX2k8mqQWpIvOaMTIRDRD_fdCzMLqbqaSy-38" />
 <title>Sankatmochan Jyotish Evam Anushthan Kendra | संकटमोचन ज्योतिष एवं अनुष्ठान केंद्र</title>
 <meta name="description" content="Traditional Vedic astrology and personalised birth Kundli services by Pandit Pankaj Mandloi, Narsingh Mandir, Sanwer, Indore.">
@@ -620,6 +624,68 @@
     a,button,label,summary,.card,.svc,.tab,.lang-toggle button,.foot-lang button,input,select,textarea,input[type="submit"],button[type="submit"]{cursor:auto;}
     .dynamic-cursor,.dynamic-cursor-dot{display:none!important;}
   }
+
+  /* ======================================================================
+     MOBILE COMFORT — Android & iOS
+     ----------------------------------------------------------------------
+     - Prevents iOS Safari's auto-zoom-on-focus (inputs must be >=16px)
+     - Enlarges every tappable control to Apple/Google's 44x44px minimum
+     - Removes the harsh grey tap-flash and replaces it with a soft one
+     - touch-action:manipulation removes the old 300ms tap delay and stops
+       accidental double-tap-to-zoom on buttons/links
+     - Respects the iPhone notch / Android gesture bar via env(safe-area-*)
+     ====================================================================== */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  html,body{overflow-x:hidden;}
+  a,button,input,select,textarea,summary{touch-action:manipulation;}
+  a,button{-webkit-tap-highlight-color:rgba(217,102,14,.18);}
+
+  @media (hover:none),(pointer:coarse){
+    /* Buttons & links: comfortable thumb-sized targets everywhere */
+    .btn{padding:14px 26px;font-size:15px;min-height:46px;}
+    .burger{min-width:46px;min-height:46px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:-8px;}
+    nav.main-nav a{padding:16px 28px;font-size:16px;min-height:48px;display:flex;align-items:center;}
+    .lang-toggle button{padding:9px 16px;min-height:38px;font-size:13.5px;}
+    .head-right{gap:12px;}
+
+    /* Form fields: 16px stops iOS Safari zooming in on focus */
+    .field input,.field select,.field textarea{
+      font-size:16px;padding:13px 14px;border-radius:6px;-webkit-appearance:none;appearance:none;
+    }
+    .field label{font-size:13.5px;}
+    .field{gap:8px;}
+    .form-row{gap:14px;margin-bottom:14px;}
+    form.enq-form{padding:22px 18px;border-radius:10px;}
+    form.enq-form .btn{padding:15px 20px;font-size:16px;min-height:50px;}
+
+    /* Sample / gallery buttons and small icon controls */
+    .sample-actions .btn{padding:12px 18px;min-height:44px;}
+    .pdfv-x{min-width:44px;min-height:44px;}
+    .pdfv-tools button,.pdfv-tools a{min-height:44px;min-width:44px;}
+    .pdfv-docs button{min-height:44px;padding:10px 14px;}
+
+    /* Slightly roomier line-height & spacing for easier reading on small screens */
+    .hero p.lede,.about-content p,.enq-side p{line-height:1.8;}
+    section{padding-top:52px;padding-bottom:52px;}
+
+    /* Sticky header hugs the iPhone notch / status bar cleanly */
+    header{padding-top:env(safe-area-inset-top);}
+    .navbar{padding:14px 20px;}
+    .wrap{padding:0 20px;}
+  }
+
+  @media (max-width:480px){
+    .hero h1{font-size:28px;}
+    .hero-kicker{font-size:12.5px;}
+    .wrap{padding:0 18px;}
+    .btn{width:100%;justify-content:center;}
+    .hero-ctas{flex-direction:column;}
+    .card,.svc{padding:18px;}
+  }
+
+  /* Comfortable bottom padding so content never sits under the iPhone
+     home-indicator bar or an Android gesture nav bar */
+  footer{padding-bottom:calc(24px + env(safe-area-inset-bottom));}
 </style>
 <script type="application/ld+json">
 {

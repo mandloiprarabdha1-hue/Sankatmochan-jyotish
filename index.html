@@ -1495,7 +1495,20 @@
   document.getElementById('btnHI').addEventListener('click', function(){ setLang('hi'); });
   document.getElementById('fbtnEN').addEventListener('click', function(){ setLang('en'); });
   document.getElementById('fbtnHI').addEventListener('click', function(){ setLang('hi'); });
-  setLang('en');
+
+  // Auto-detect language from the URL path, e.g. /हिंदी or /hindi or /hi -> Hindi.
+  // Any other path (including /) -> English. Nothing else about the site changes.
+  function detectLangFromPath(){
+    var path = window.location.pathname;
+    try{ path = decodeURIComponent(path); }catch(e){}
+    path = path.replace(/\/+$/,''); // strip trailing slash
+    var hindiPaths = ['/हिंदी','/hindi','/hi'];
+    for(var i=0;i<hindiPaths.length;i++){
+      if(path.toLowerCase() === hindiPaths[i].toLowerCase()) return 'hi';
+    }
+    return 'en';
+  }
+  setLang(detectLangFromPath());
 
   var burger = document.getElementById('burgerBtn');
   var nav = document.getElementById('mainNav');

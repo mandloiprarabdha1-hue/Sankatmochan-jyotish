@@ -2,6 +2,8 @@
   "rewrites": [
     { "source": "/हिंदी", "destination": "/index.html" },
     { "source": "/हिंदी/", "destination": "/index.html" },
+    { "source": "/%E0%A4%B9%E0%A4%BF%E0%A4%82%E0%A4%A6%E0%A5%80", "destination": "/index.html" },
+    { "source": "/%E0%A4%B9%E0%A4%BF%E0%A4%82%E0%A4%A6%E0%A5%80/", "destination": "/index.html" },
     { "source": "/hindi", "destination": "/index.html" },
     { "source": "/hi", "destination": "/index.html" }
   ]

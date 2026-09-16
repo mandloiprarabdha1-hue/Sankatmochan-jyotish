@@ -1398,18 +1398,31 @@
   /* ------------------------------------------------------------------
      ENQUIRY FORM  →  SENDS DIRECTLY, NO PAGE REDIRECT
      ------------------------------------------------------------------
-     Two delivery paths are supported, tried in this order:
+     Three delivery paths are supported, tried in this order:
 
      1) SUPABASE (optional) — fill SUPABASE_URL / SUPABASE_ANON_KEY below
         and create the table + RLS policy shown in README.md, if you want
         enquiries stored in a database you can browse later.
 
-     2) FORMSUBMIT.CO (works immediately, no account needed) — the form
-        is posted with fetch() to FormSubmit's AJAX endpoint, which emails
-        the enquiry straight to pandit11317@gmail.com. Because it is a
-        fetch() call rather than a normal form submission, the browser
-        never navigates away or opens a new tab — the visitor stays on
-        this page and just sees the "thank you" message below the form.
+     2) WEB3FORMS (recommended, works immediately once you add a free
+        Access Key) — the form is posted with fetch() to Web3Forms' API,
+        which emails the enquiry straight to pandit11317@gmail.com and
+        also logs it in the Web3Forms dashboard (with real-time tracking)
+        at https://web3forms.com/ — no account setup delay, no email
+        address exposed in the page source.
+
+        One-time setup: go to https://web3forms.com/, enter
+        pandit11317@gmail.com, get a free Access Key, and paste it into
+        WEB3FORMS_ACCESS_KEY below. Until you do that, the form silently
+        falls back to FormSubmit (path 3) so it keeps working either way.
+
+     3) FORMSUBMIT.CO (works immediately, no account needed, used as a
+        fallback if Web3Forms isn't configured) — the form is posted with
+        fetch() to FormSubmit's AJAX endpoint, which emails the enquiry
+        straight to pandit11317@gmail.com. Because it is a fetch() call
+        rather than a normal form submission, the browser never navigates
+        away — the visitor stays on this page and just sees the
+        "thank you" message below the form.
 
         One-time setup: the very first enquiry FormSubmit receives for an
         address triggers a confirmation email to that address ("Activate
@@ -1419,6 +1432,9 @@
   var SUPABASE_URL       = '';   // e.g. 'https://abcdefgh.supabase.co'
   var SUPABASE_ANON_KEY  = '';   // the public anon key
   var SUPABASE_TABLE     = 'enquiries';
+
+  var WEB3FORMS_ACCESS_KEY = '8bcb8e6b-1a4b-434b-af5e-bc7daf984897';   // paste your free key from https://web3forms.com/
+  var WEB3FORMS_ENDPOINT   = 'https://api.web3forms.com/submit';
 
   var FORMSUBMIT_EMAIL   = 'pandit11317@gmail.com';
   var FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/' + FORMSUBMIT_EMAIL;
@@ -1440,6 +1456,30 @@
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(payload)
+    }).then(function(res){ if(!res.ok) throw new Error('HTTP ' + res.status); });
+  }
+
+  function sendToWeb3Forms(payload){
+    var readable = {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: 'New Kundli Enquiry — ' + payload.name,
+      from_name: 'Sankatmochan Jyotish Website',
+      Name: payload.name,
+      Phone: payload.phone,
+      'Date of Birth': payload.date_of_birth,
+      'Time of Birth': payload.time_of_birth || '—',
+      'Place of Birth': payload.place_of_birth,
+      'Latitude': payload.latitude || '—',
+      'Longitude': payload.longitude || '—',
+      'Time Zone': payload.timezone || '—',
+      'Service Required': payload.service,
+      Message: payload.message || '—',
+      Language: payload.language === 'hi' ? 'Hindi' : 'English'
+    };
+    return fetch(WEB3FORMS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(readable)
     }).then(function(res){ if(!res.ok) throw new Error('HTTP ' + res.status); });
   }
 
@@ -1490,7 +1530,11 @@
 
     var deliveries = [];
     if(SUPABASE_URL && SUPABASE_ANON_KEY) deliveries.push(sendToSupabase(payload));
-    deliveries.push(sendToFormSubmit(payload));
+    if(WEB3FORMS_ACCESS_KEY){
+      deliveries.push(sendToWeb3Forms(payload));
+    } else {
+      deliveries.push(sendToFormSubmit(payload));
+    }
 
     Promise.all(deliveries)
       .then(function(){

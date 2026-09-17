@@ -1664,7 +1664,6 @@
         form.reset();
         var _chip = document.getElementById('pobChip');
         if(_chip) _chip.classList.remove('show');
-        window.dispatchEvent(new Event('enquirySubmitted'));
       })
       .catch(function(err){
         console.error('Enquiry submit failed:', err);
@@ -2231,48 +2230,6 @@
   <!-- Vercel Web Analytics (static-site snippet; enable "Analytics" for this project in the Vercel dashboard) -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <!-- Notification widget: shows a browser notification with the site logo and name, no app or redirect -->
-  <button type="button"
-     id="notifyWidget"
-     style="position:fixed;right:18px;bottom:18px;z-index:9999;display:flex;align-items:center;gap:9px;
-            background:#2E7D32;color:#fff;border:none;cursor:pointer;text-decoration:none;padding:11px 16px 11px 12px;border-radius:999px;
-            box-shadow:0 6px 18px rgba(0,0,0,.28);font-family:inherit;font-size:14px;font-weight:600;
-            transition:transform .18s ease, box-shadow .18s ease;">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg" style="flex:none;">
-      <path d="M12 22a2.4 2.4 0 0 0 2.4-2.4h-4.8A2.4 2.4 0 0 0 12 22Zm7.2-6v-5.2c0-3.48-1.85-6.39-5.1-7.16V2.8a1.6 1.6 0 0 0-3.2 0v.84c-3.25.77-5.1 3.67-5.1 7.16V16l-2 2v1h19.4v-1l-2-2Z"/>
-    </svg>
-    <span>Notify Me</span>
-  </button>
-
-  <script>
-  (function(){
-    var SITE_NAME = 'Shri Sankatmochan Jyotish Evam Anushthan Kendra';
-    var SITE_ICON = 'assets/logo-seal.png';
-
-    function showSiteNotification(body){
-      if(!('Notification' in window)) return;
-      if(Notification.permission === 'granted'){
-        new Notification(SITE_NAME, { body: body, icon: SITE_ICON });
-      } else if(Notification.permission !== 'denied'){
-        Notification.requestPermission().then(function(perm){
-          if(perm === 'granted') new Notification(SITE_NAME, { body: body, icon: SITE_ICON });
-        });
-      }
-    }
-
-    var notifyBtn = document.getElementById('notifyWidget');
-    if(notifyBtn){
-      notifyBtn.addEventListener('click', function(){
-        showSiteNotification('Namaste! Tap here anytime to reach us about your Kundli enquiry.');
-      });
-    }
-
-    // Also fire a confirmation notification right after a successful enquiry submission.
-    window.addEventListener('enquirySubmitted', function(){
-      showSiteNotification('Your enquiry has been received. Our team will contact you shortly.');
-    });
-  })();
   </script>
 
 </body>

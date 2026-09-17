@@ -1661,6 +1661,27 @@
     Promise.all(deliveries)
       .then(function(){
         okMsg.classList.add('show');
+
+        // Open WhatsApp with a pre-filled enquiry summary, ready to send with one tap.
+        var WHATSAPP_NUMBER = '919589988488'; // country code + number, no + or spaces
+        var waTextHi =
+          '🙏 श्री संकटमोचन ज्योतिष एवं अनुष्ठान केंद्र 🙏\n' +
+          'नमस्कार!\n' +
+          'आपकी enquiry सफलतापूर्वक प्राप्त हो गई है। धन्यवाद।\n' +
+          'हमारी टीम जल्द ही आपसे संपर्क करेगी और आपकी enquiry से संबंधित आवश्यक जानकारी प्रदान करेगी।\n' +
+          '📍 स्थान: नरसिंह मंदिर, कलाल घाट (तोधरा), सांवेर\n\n' +
+          'धन्यवाद | Thank You 🙏';
+        var waTextEn =
+          '🙏 Shri Sankatmochan Jyotish Evam Anushthan Kendra 🙏\n' +
+          'Namaste!\n' +
+          'Your enquiry has been successfully received. Thank you for contacting us.\n' +
+          'Our team will contact you shortly and provide you with the necessary information regarding your enquiry.\n' +
+          '📍 Location: Narsingh Mandir, Kalal Ghat (Todhra), Sanwer\n\n' +
+          'धन्यवाद | Thank You 🙏';
+        var waText = payload.language === 'hi' ? waTextHi : waTextEn;
+        var waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(waText);
+        window.open(waUrl, '_blank');
+
         form.reset();
         var _chip = document.getElementById('pobChip');
         if(_chip) _chip.classList.remove('show');

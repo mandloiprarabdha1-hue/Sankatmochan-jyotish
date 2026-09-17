@@ -1664,6 +1664,7 @@
         form.reset();
         var _chip = document.getElementById('pobChip');
         if(_chip) _chip.classList.remove('show');
+        window.dispatchEvent(new Event('enquirySubmitted'));
       })
       .catch(function(err){
         console.error('Enquiry submit failed:', err);
@@ -2231,20 +2232,48 @@
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
-  <!-- WhatsApp Click-to-Chat widget: shown as a business tag, visitor taps it whenever they choose -->
-  <a href="https://wa.me/919589988488?text=%F0%9F%99%8F%20Namaste%2C%20I%20have%20an%20enquiry%20for%20Shri%20Sankatmochan%20Jyotish%20Evam%20Anushthan%20Kendra."
-     target="_blank" rel="noopener"
-     id="waWidget"
+  <!-- Notification widget: shows a browser notification with the site logo and name, no app or redirect -->
+  <button type="button"
+     id="notifyWidget"
      style="position:fixed;right:18px;bottom:18px;z-index:9999;display:flex;align-items:center;gap:9px;
-            background:#25D366;color:#fff;text-decoration:none;padding:11px 16px 11px 12px;border-radius:999px;
+            background:#2E7D32;color:#fff;border:none;cursor:pointer;text-decoration:none;padding:11px 16px 11px 12px;border-radius:999px;
             box-shadow:0 6px 18px rgba(0,0,0,.28);font-family:inherit;font-size:14px;font-weight:600;
             transition:transform .18s ease, box-shadow .18s ease;">
-    <svg width="26" height="26" viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg" style="flex:none;">
-      <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.697 4.61 1.902 6.484L4 29l7.723-1.867A11.94 11.94 0 0 0 16.001 27C22.629 27 28 21.627 28 15S22.629 3 16.001 3zm0 21.75c-1.94 0-3.79-.51-5.4-1.47l-.386-.23-4.585 1.108 1.226-4.469-.252-.399A9.72 9.72 0 0 1 5.25 15c0-5.93 4.82-10.75 10.751-10.75S26.75 9.07 26.75 15 21.932 24.75 16.001 24.75z"/>
-      <path d="M21.62 17.686c-.297-.149-1.758-.868-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.966-.94 1.164-.174.198-.347.223-.644.075-.297-.15-1.253-.462-2.387-1.473-.882-.787-1.478-1.76-1.651-2.058-.174-.298-.019-.459.13-.607.134-.133.298-.347.446-.52.15-.174.199-.298.298-.496.099-.198.05-.372-.025-.521-.075-.149-.67-1.614-.918-2.211-.242-.582-.487-.503-.67-.512l-.57-.01c-.198 0-.52.074-.792.372-.273.298-1.04 1.016-1.04 2.478 0 1.462 1.065 2.875 1.213 3.073.149.198 2.096 3.2 5.08 4.489.71.306 1.263.489 1.695.626.712.226 1.36.194 1.873.118.571-.085 1.758-.719 2.006-1.412.248-.694.248-1.288.174-1.412-.075-.124-.273-.198-.57-.347z"/>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg" style="flex:none;">
+      <path d="M12 22a2.4 2.4 0 0 0 2.4-2.4h-4.8A2.4 2.4 0 0 0 12 22Zm7.2-6v-5.2c0-3.48-1.85-6.39-5.1-7.16V2.8a1.6 1.6 0 0 0-3.2 0v.84c-3.25.77-5.1 3.67-5.1 7.16V16l-2 2v1h19.4v-1l-2-2Z"/>
     </svg>
-    <span>Chat with Us</span>
-  </a>
+    <span>Notify Me</span>
+  </button>
+
+  <script>
+  (function(){
+    var SITE_NAME = 'Shri Sankatmochan Jyotish Evam Anushthan Kendra';
+    var SITE_ICON = 'assets/logo-seal.png';
+
+    function showSiteNotification(body){
+      if(!('Notification' in window)) return;
+      if(Notification.permission === 'granted'){
+        new Notification(SITE_NAME, { body: body, icon: SITE_ICON });
+      } else if(Notification.permission !== 'denied'){
+        Notification.requestPermission().then(function(perm){
+          if(perm === 'granted') new Notification(SITE_NAME, { body: body, icon: SITE_ICON });
+        });
+      }
+    }
+
+    var notifyBtn = document.getElementById('notifyWidget');
+    if(notifyBtn){
+      notifyBtn.addEventListener('click', function(){
+        showSiteNotification('Namaste! Tap here anytime to reach us about your Kundli enquiry.');
+      });
+    }
+
+    // Also fire a confirmation notification right after a successful enquiry submission.
+    window.addEventListener('enquirySubmitted', function(){
+      showSiteNotification('Your enquiry has been received. Our team will contact you shortly.');
+    });
+  })();
+  </script>
 
 </body>
 </html>

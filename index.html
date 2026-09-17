@@ -171,21 +171,31 @@
 
   /* ---------- kundli product ---------- */
   .product{padding:84px 0;background:linear-gradient(180deg,var(--maroon) 0%, #601621 100%);color:#F7E9D8;position:relative;overflow:hidden;}
-  .product .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;position:relative;z-index:2;}
+  .product .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;position:relative;z-index:2;}
+  .offer{display:flex;flex-direction:column;}
+  .offer + .offer{padding-left:48px;border-left:1px solid rgba(228,194,115,.25);}
   .product-cover{position:relative;display:flex;justify-content:center;}
   .product-cover .frame{
-    position:relative;width:100%;max-width:360px;border-radius:6px;overflow:hidden;
+    position:relative;width:100%;max-width:300px;border-radius:6px;overflow:hidden;
     border:6px solid var(--gold);box-shadow:0 26px 50px rgba(0,0,0,.4);
     transform:rotate(-2deg);
   }
   .product-cover .frame img{width:100%;height:auto;display:block;}
-  .product-cover .price-badge{
+  .product-cover .price-badge,.consult-frame .price-badge{
     position:absolute;right:-14px;top:-14px;background:var(--saffron);color:#fff;
     border-radius:50%;width:96px;height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;
     border:3px solid var(--ivory);box-shadow:0 10px 22px rgba(0,0,0,.3);transform:rotate(6deg);
   }
-  .product-cover .price-badge .amt{font-family:'Marcellus',serif;font-size:22px;line-height:1;}
-  .product-cover .price-badge .cur{font-size:10px;letter-spacing:.5px;margin-top:2px;}
+  .product-cover .price-badge .amt,.consult-frame .price-badge .amt{font-family:'Marcellus',serif;font-size:22px;line-height:1;}
+  .product-cover .price-badge .cur,.consult-frame .price-badge .cur{font-size:10px;letter-spacing:.5px;margin-top:2px;}
+
+  .consult-frame{
+    position:relative;width:100%;max-width:300px;margin:0 auto;border-radius:6px;overflow:hidden;
+    border:6px solid var(--gold);box-shadow:0 26px 50px rgba(0,0,0,.4);transform:rotate(2deg);
+    background:radial-gradient(circle at 50% 40%,#7C1F2B 0%,#4a1119 75%);
+    aspect-ratio:820/537;display:flex;align-items:center;justify-content:center;
+  }
+  .consult-frame .om-glyph{font-size:56px;color:var(--gold-light);font-family:'Marcellus',serif;line-height:1;}
 
   .product-info h2{color:#fff;font-size:30px;margin:0 0 6px;}
   .product-info .tagline{color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;margin-bottom:20px;}
@@ -194,12 +204,29 @@
   .price-line{display:flex;align-items:baseline;gap:10px;margin-bottom:26px;}
   .price-line .price{font-family:'Marcellus',serif;font-size:34px;color:var(--gold-light);}
   .price-line .price-label{color:#E9D8C4;font-size:14.5px;}
+
+  /* ---------- consultation fee badge (hero + footer) ---------- */
+  .fee-badge{
+    display:inline-flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg,var(--saffron) 0%,var(--saffron-deep) 100%);
+    color:#fff;border-radius:30px;padding:10px 20px;
+    box-shadow:0 6px 18px rgba(184,78,8,.28);
+    font-size:14px;margin:18px 0;
+  }
+  .fee-badge .fee-amt{font-family:'Marcellus',serif;font-size:19px;font-weight:700;}
+  .fee-badge .fee-sep{opacity:.6;}
+  .fee-badge .fee-note{color:#FCEBD6;font-size:13px;}
+  footer .fee-badge{margin:0 0 22px;}
+  @media(max-width:520px){
+    .fee-badge{flex-wrap:wrap;font-size:13px;padding:10px 16px;}
+  }
   .includes{list-style:none;padding:0;margin:0 0 30px;display:grid;gap:10px;}
   .includes li{display:flex;gap:10px;font-size:14px;color:#E9D8C4;align-items:flex-start;}
   .includes li .tick{color:var(--gold-light);flex-shrink:0;}
 
   @media(max-width:920px){
     .product .wrap{grid-template-columns:1fr;}
+    .offer + .offer{padding-left:0;border-left:none;padding-top:40px;border-top:1px solid rgba(228,194,115,.25);}
     .product-cover{order:-1;}
   }
 
@@ -807,6 +834,14 @@
           <span class="en">Learn More</span><span class="hi">हमारे बारे में जानें</span>
         </a>
       </div>
+      <div class="fee-badge">
+        <span class="fee-amt">₹200</span>
+        <span class="fee-sep">&middot;</span>
+        <span class="fee-note">
+          <span class="en">Astrological Consultation Fee — Daily 4 PM to 6 PM (Online) &middot; Limited to 5 appointments/day</span>
+          <span class="hi">ज्योतिषीय परामर्श शुल्क — प्रतिदिन शाम 4 से 6 बजे (ऑनलाइन) &middot; प्रतिदिन केवल 5 अपॉइंटमेंट</span>
+        </span>
+      </div>
     </div>
     <div class="hero-art reveal">
       <div class="halo"></div>
@@ -824,40 +859,73 @@
 <section class="product" id="kundli">
   <div class="stars"></div>
   <div class="wrap">
-    <div class="product-cover reveal">
-      <div class="frame">
-        <img src="assets/kundli-sample-cover.jpg" alt="Personalised Janma Kundli cover — Sankatmochan Jyotish Evam Anushthan Kendra" width="820" height="537" loading="lazy" decoding="async">
+    <div class="offer offer-kundli reveal">
+      <div class="product-cover">
+        <div class="frame">
+          <img src="assets/kundli-sample-cover.jpg" alt="Personalised Janma Kundli cover — Sankatmochan Jyotish Evam Anushthan Kendra" width="820" height="537" loading="lazy" decoding="async">
+        </div>
+        <div class="price-badge">
+          <span class="amt">₹551</span>
+          <span class="cur en">per Kundli</span><span class="cur hi">प्रति कुंडली</span>
+        </div>
       </div>
-      <div class="price-badge">
-        <span class="amt">₹551</span>
-        <span class="cur en">per Kundli</span><span class="cur hi">प्रति कुंडली</span>
+      <div class="product-info">
+        <h2><span class="en">Personalised Birth Kundli</span><span class="hi">व्यक्तिगत जन्म कुंडली</span></h2>
+        <div class="tagline"><span class="en">Prepared from your exact birth details</span><span class="hi">आपके सटीक जन्म विवरण के आधार पर तैयार</span></div>
+        <p>
+          <span class="en">Each Kundli is prepared using traditional Vedic method from date, time and place of birth, and presented in a clean, readable format for astrological study and guidance.</span>
+          <span class="hi">प्रत्येक कुंडली पारंपरिक वैदिक पद्धति से जन्म तिथि, समय एवं स्थान के आधार पर तैयार की जाती है, तथा ज्योतिषीय अध्ययन एवं मार्गदर्शन हेतु सुव्यवस्थित रूप में प्रस्तुत की जाती है।</span>
+        </p>
+        <div class="price-line">
+          <span class="price">₹551</span>
+          <span class="price-label"><span class="en">One Kundli — ₹551</span><span class="hi">एक कुंडली — ₹551</span></span>
+        </div>
+        <ul class="includes">
+          <li><span class="tick">✦</span><span class="en">Graha and Bhava positions at birth</span><span class="hi">जन्म के समय ग्रह एवं भाव स्थिति</span></li>
+          <li><span class="tick">✦</span><span class="en">Rashi and Lagna details</span><span class="hi">राशि एवं लग्न का विवरण</span></li>
+          <li><span class="tick">✦</span><span class="en">Overview of Dashas and transits</span><span class="hi">दशा एवं गोचर का सामान्य अवलोकन</span></li>
+          <li><span class="tick">✦</span><span class="en">Prepared and reviewed by Pandit Pankaj Mandloi</span><span class="hi">पंडित पंकज मंडलोई द्वारा तैयार एवं समीक्षित</span></li>
+          <li><span class="tick">✦</span><span class="en">Planetary positions computed with LeoStar astrology software for calculation accuracy</span><span class="hi">गणना की सटीकता हेतु ग्रह स्थितियाँ LeoStar ज्योतिष सॉफ्टवेयर से निकाली जाती हैं</span></li>
+        </ul>
+        <p class="software-note">
+          <span class="en">The Kendra uses LeoStar — a widely trusted Vedic astrology software — to generate the precise Graha, Bhava and Dasha calculations behind every Kundli. Pandit Pankaj Mandloi then reviews and interprets this data personally, so you get both computational accuracy and experienced human judgement.</span>
+          <span class="hi">केंद्र प्रत्येक कुंडली के पीछे सटीक ग्रह, भाव एवं दशा गणना के लिए LeoStar — एक व्यापक रूप से विश्वसनीय वैदिक ज्योतिष सॉफ्टवेयर — का उपयोग करता है। इसके पश्चात पंडित पंकज मंडलोई स्वयं इस डेटा की समीक्षा एवं व्याख्या करते हैं, जिससे आपको गणनात्मक सटीकता एवं अनुभवी मार्गदर्शन दोनों प्राप्त होते हैं।</span>
+        </p>
+        <a href="#enquiry" class="btn btn-primary">
+          <span class="en">Enquire About Kundli</span><span class="hi">कुंडली के लिए पूछताछ करें</span>
+        </a>
       </div>
     </div>
-    <div class="product-info reveal">
-      <h2><span class="en">Personalised Birth Kundli</span><span class="hi">व्यक्तिगत जन्म कुंडली</span></h2>
-      <div class="tagline"><span class="en">Prepared from your exact birth details</span><span class="hi">आपके सटीक जन्म विवरण के आधार पर तैयार</span></div>
-      <p>
-        <span class="en">Each Kundli is prepared using traditional Vedic method from date, time and place of birth, and presented in a clean, readable format for astrological study and guidance.</span>
-        <span class="hi">प्रत्येक कुंडली पारंपरिक वैदिक पद्धति से जन्म तिथि, समय एवं स्थान के आधार पर तैयार की जाती है, तथा ज्योतिषीय अध्ययन एवं मार्गदर्शन हेतु सुव्यवस्थित रूप में प्रस्तुत की जाती है।</span>
-      </p>
-      <div class="price-line">
-        <span class="price">₹551</span>
-        <span class="price-label"><span class="en">One Kundli — ₹551</span><span class="hi">एक कुंडली — ₹551</span></span>
+
+    <div class="offer offer-consult reveal">
+      <div class="consult-frame">
+        <span class="om-glyph">ॐ</span>
+        <div class="price-badge">
+          <span class="amt">₹200</span>
+          <span class="cur en">per session</span><span class="cur hi">प्रति सत्र</span>
+        </div>
       </div>
-      <ul class="includes">
-        <li><span class="tick">✦</span><span class="en">Graha and Bhava positions at birth</span><span class="hi">जन्म के समय ग्रह एवं भाव स्थिति</span></li>
-        <li><span class="tick">✦</span><span class="en">Rashi and Lagna details</span><span class="hi">राशि एवं लग्न का विवरण</span></li>
-        <li><span class="tick">✦</span><span class="en">Overview of Dashas and transits</span><span class="hi">दशा एवं गोचर का सामान्य अवलोकन</span></li>
-        <li><span class="tick">✦</span><span class="en">Prepared and reviewed by Pandit Pankaj Mandloi</span><span class="hi">पंडित पंकज मंडलोई द्वारा तैयार एवं समीक्षित</span></li>
-        <li><span class="tick">✦</span><span class="en">Planetary positions computed with LeoStar astrology software for calculation accuracy</span><span class="hi">गणना की सटीकता हेतु ग्रह स्थितियाँ LeoStar ज्योतिष सॉफ्टवेयर से निकाली जाती हैं</span></li>
-      </ul>
-      <p class="software-note">
-        <span class="en">The Kendra uses LeoStar — a widely trusted Vedic astrology software — to generate the precise Graha, Bhava and Dasha calculations behind every Kundli. Pandit Pankaj Mandloi then reviews and interprets this data personally, so you get both computational accuracy and experienced human judgement.</span>
-        <span class="hi">केंद्र प्रत्येक कुंडली के पीछे सटीक ग्रह, भाव एवं दशा गणना के लिए LeoStar — एक व्यापक रूप से विश्वसनीय वैदिक ज्योतिष सॉफ्टवेयर — का उपयोग करता है। इसके पश्चात पंडित पंकज मंडलोई स्वयं इस डेटा की समीक्षा एवं व्याख्या करते हैं, जिससे आपको गणनात्मक सटीकता एवं अनुभवी मार्गदर्शन दोनों प्राप्त होते हैं।</span>
-      </p>
-      <a href="#enquiry" class="btn btn-primary">
-        <span class="en">Enquire About Kundli</span><span class="hi">कुंडली के लिए पूछताछ करें</span>
-      </a>
+      <div class="product-info">
+        <h2><span class="en">Astrological Consultation</span><span class="hi">ज्योतिषीय परामर्श</span></h2>
+        <div class="tagline"><span class="en">In person at the center, or online</span><span class="hi">केंद्र पर व्यक्तिगत रूप से, अथवा ऑनलाइन</span></div>
+        <p>
+          <span class="en">A one-on-one consultation with Pandit Pankaj Mandloi for astrological guidance on personal, career, health or family matters.</span>
+          <span class="hi">व्यक्तिगत, कैरियर, स्वास्थ्य अथवा पारिवारिक विषयों पर ज्योतिषीय मार्गदर्शन हेतु पंडित पंकज मंडलोई से एकल परामर्श।</span>
+        </p>
+        <div class="price-line">
+          <span class="price">₹200</span>
+          <span class="price-label"><span class="en">Per Consultation — ₹200</span><span class="hi">प्रति परामर्श — ₹200</span></span>
+        </div>
+        <ul class="includes">
+          <li><span class="tick">✦</span><span class="en">Available online every day, 4 PM – 6 PM</span><span class="hi">प्रतिदिन शाम 4 से 6 बजे तक ऑनलाइन उपलब्ध</span></li>
+          <li><span class="tick">✦</span><span class="en">Limited to 5 appointments per day</span><span class="hi">प्रतिदिन अधिकतम 5 अपॉइंटमेंट तक सीमित</span></li>
+          <li><span class="tick">✦</span><span class="en">In-person consultation also available at the center</span><span class="hi">केंद्र पर व्यक्तिगत परामर्श भी उपलब्ध</span></li>
+          <li><span class="tick">✦</span><span class="en">Guided personally by Pandit Pankaj Mandloi</span><span class="hi">पंडित पंकज मंडलोई द्वारा व्यक्तिगत रूप से मार्गदर्शित</span></li>
+        </ul>
+        <a href="#enquiry" class="btn btn-primary">
+          <span class="en">Book a Consultation</span><span class="hi">परामर्श हेतु बुक करें</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -1185,7 +1253,7 @@
       <div class="svc">
         <h3><span class="en">Astrological Consultation</span><span class="hi">ज्योतिषीय परामर्श</span></h3>
         <p><span class="en">In-person consultation with Pandit Pankaj Mandloi at the center.</span><span class="hi">केंद्र पर पंडित पंकज मंडलोई से व्यक्तिगत परामर्श।</span></p>
-        <p><span class="en">Consultation fee: ₹200. Also available online every day from 4 PM to 6 PM.</span><span class="hi">परामर्श शुल्क: ₹200। प्रतिदिन शाम 4 बजे से 6 बजे तक ऑनलाइन भी उपलब्ध।</span></p>
+        <p><span class="en">Consultation fee: ₹200. Also available online every day from 4 PM to 6 PM (limited to 5 appointments per day).</span><span class="hi">परामर्श शुल्क: ₹200। प्रतिदिन शाम 4 बजे से 6 बजे तक ऑनलाइन भी उपलब्ध (प्रतिदिन केवल 5 अपॉइंटमेंट तक सीमित)।</span></p>
       </div>
       <div class="svc">
         <h3><span class="en">Dasha &amp; Transit Study</span><span class="hi">दशा एवं गोचर अध्ययन</span></h3>
@@ -1457,6 +1525,14 @@
           <button id="fbtnHI" type="button">हिंदी</button>
         </div>
       </div>
+    </div>
+    <div class="fee-badge">
+      <span class="fee-amt">₹200</span>
+      <span class="fee-sep">&middot;</span>
+      <span class="fee-note">
+        <span class="en">Astrological Consultation Fee — Daily 4 PM to 6 PM (Online) &middot; Limited to 5 appointments/day</span>
+        <span class="hi">ज्योतिषीय परामर्श शुल्क — प्रतिदिन शाम 4 से 6 बजे (ऑनलाइन) &middot; प्रतिदिन केवल 5 अपॉइंटमेंट</span>
+      </span>
     </div>
     <div class="disclaimer">
       <span class="en">Astrological services are provided for traditional astrological study and guidance. Results may vary depending on individual circumstances.</span>

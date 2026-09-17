@@ -53,6 +53,7 @@
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
+    position:relative;
     margin:0;
     background:var(--cream);
     color:var(--brown);
@@ -73,6 +74,22 @@
   img{max-width:100%;height:auto;display:block;}
   .wrap{max-width:1160px;margin:0 auto;padding:0 28px;}
   section{position:relative;}
+
+  /* ---------- Ram naam background watermark (covers whole site) ---------- */
+  .ram-watermark{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.28;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ctext x='1' y='12' font-family='Noto Serif Devanagari,serif' font-size='8' font-weight='700' fill='%23B98A2E' opacity='.5'%3E%E0%A4%B0%E0%A4%BE%E0%A4%AE%3C/text%3E%3Ctext x='23' y='12' font-family='Noto Serif Devanagari,serif' font-size='8' font-weight='700' fill='%23D9660E' opacity='.4'%3E%E0%A4%B0%E0%A4%BE%E0%A4%AE%3C/text%3E%3Ctext x='1' y='26' font-family='Noto Serif Devanagari,serif' font-size='8' font-weight='700' fill='%237C1F2B' opacity='.35'%3E%E0%A4%B0%E0%A4%BE%E0%A4%AE%3C/text%3E%3Ctext x='23' y='26' font-family='Noto Serif Devanagari,serif' font-size='8' font-weight='700' fill='%23B98A2E' opacity='.45'%3E%E0%A4%B0%E0%A4%BE%E0%A4%AE%3C/text%3E%3Ctext x='1' y='40' font-family='Noto Serif Devanagari,serif' font-size='8' font-weight='700' fill='%23D9660E' opacity='.35'%3E%E0%A4%B0%E0%A4%BE%E0%A4%AE%3C/text%3E%3Ctext x='23' y='40' font-family='Noto Serif Devanagari,serif' font-size='8' font-weight='700' fill='%237C1F2B' opacity='.4'%3E%E0%A4%B0%E0%A4%BE%E0%A4%AE%3C/text%3E%3C/svg%3E");
+    background-repeat:repeat;
+    background-size:44px 44px;
+  }
+  @media(max-width:640px){
+    .ram-watermark{background-size:34px 34px;}
+  }
 
   /* ---------- decorative star/constellation svg backgrounds ---------- */
   .stars{
@@ -790,6 +807,7 @@
 </script>
 </head>
 <body class="lang-en">
+<div class="ram-watermark" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ============ HEADER ============ -->
